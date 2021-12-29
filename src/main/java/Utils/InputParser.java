@@ -11,7 +11,7 @@ public class InputParser {
         List<String> inputList = new ArrayList<>();
         Scanner scanner = new Scanner(new File(pathToFile));
         while (scanner.hasNextLine()) {
-            inputList.add(scanner.nextLine());
+            inputList.add(scanner.nextLine().trim());
         }
         scanner.close();
         return  inputList;
