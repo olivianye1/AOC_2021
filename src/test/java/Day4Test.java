@@ -21,4 +21,12 @@ public class Day4Test {
         assertThat(day4.getWinningScore("/Users/olivianye/Projects/AOC_2021/src/main/java/Day4/Day4AocInput"))
                 .isEqualTo(expectedScore);
     }
+
+    @Test
+    void testDetermineLastWinningScoreTestData() throws FileNotFoundException {
+        int expectedScore = 1924;
+        assertThat(day4.getLastWinningScore("/Users/olivianye/Projects/AOC_2021/src/main/java/Day4/Day4TestInput"))
+                .isEqualTo(expectedScore);
+    }
+
 }

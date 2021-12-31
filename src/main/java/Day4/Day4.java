@@ -17,19 +17,18 @@ import static java.lang.Integer.parseInt;
 public class Day4 {
     private InputParser inputParser = new InputParser();
 
-    private static String WINNING_NUMBER;
+    private List<String> WINNING_NUMBER_LIST = new ArrayList<>();
+    private List<Integer> countCardsThatHaveWon = new ArrayList<>();
+
 
 
     public int getWinningScore(String bingoInputFilePath) throws FileNotFoundException {
-        List<List<Map<String, Boolean>>> winningCard = getWinningBingoCard(bingoInputFilePath);
+        List<List<Map<String, Boolean>>> winningCard = getWinningBingoCards(bingoInputFilePath).get(0);
         AtomicInteger unmarkedSum = new AtomicInteger();
-
 
         List<Map<String, Boolean>>  allNumbersOnCard = new ArrayList<>();
 
-
-
-        winningCard.forEach(row -> allNumbersOnCard.addAll(row));
+        winningCard.forEach(allNumbersOnCard::addAll);
 
         allNumbersOnCard.forEach(number -> {
             if (number.containsValue(false)) {
@@ -38,10 +37,29 @@ public class Day4 {
             }
         });
 
-        return unmarkedSum.get() * parseInt(WINNING_NUMBER);
+        return unmarkedSum.get() * parseInt(WINNING_NUMBER_LIST.get(0));
     }
 
-    private List<List<Map<String, Boolean>>> getWinningBingoCard(String bingoInputFilePath) throws FileNotFoundException {
+    public int getLastWinningScore(String bingoInputFilePath) throws FileNotFoundException {
+        List<List<List<Map<String, Boolean>>>> winningCards = getWinningBingoCards(bingoInputFilePath);
+        List<List<Map<String, Boolean>>> lastWinningCard = winningCards.get(winningCards.size() - 1);
+        AtomicInteger unmarkedSum = new AtomicInteger();
+
+        List<Map<String, Boolean>>  allNumbersOnCard = new ArrayList<>();
+
+        lastWinningCard.forEach(allNumbersOnCard::addAll);
+
+        allNumbersOnCard.forEach(number -> {
+            if (number.containsValue(false)) {
+                int numberValue = parseInt(Arrays.asList(number.toString().substring(1).split("=")).get(0));
+                unmarkedSum.addAndGet(numberValue);
+            }
+        });
+        return unmarkedSum.get() * parseInt(WINNING_NUMBER_LIST.get(WINNING_NUMBER_LIST.size() - 1));
+    }
+
+
+    private List<List<List<Map<String, Boolean>>>> getWinningBingoCards(String bingoInputFilePath) throws FileNotFoundException {
         List<String> bingoInput = inputParser.parseInputForStringList(bingoInputFilePath);
         List<String> drawnNumbers = Arrays.asList(bingoInput.remove(0).split(","));
 
@@ -49,21 +67,24 @@ public class Day4 {
 
         AtomicReference<List<List<List<Map<String, Boolean>>>>> bingoCards = new AtomicReference<>(splitIntoCards(bingoRows));
 
-        AtomicReference<List<List<Map<String, Boolean>>>> winningCard = new AtomicReference<>();
+
+
+        List<List<List<Map<String, Boolean>>>> winningCards = new ArrayList<>();
         AtomicBoolean foundBingo = new AtomicBoolean(false);
         drawnNumbers.forEach(number -> {
-            if (!foundBingo.get()) {
+            while (winningCards.size() < bingoCards.get().size()) {
                 bingoCards.set(markCards(number, bingoCards.get()));
+
                 bingoCards.get().forEach(card -> {
                     if (checkForBingo(card)) {
                         foundBingo.set(true);
-                        winningCard.set(card);
-                        WINNING_NUMBER = number;
+                        winningCards.add(card);
                     }
                 });
+                if (foundBingo.get()) { WINNING_NUMBER_LIST.add(number); }
             }
         });
-        return winningCard.get();
+        return winningCards;
     }
 
     private Boolean checkForBingo(List<List<Map<String, Boolean>>> card) {
