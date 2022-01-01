@@ -21,4 +21,12 @@ public class Day6Test {
         assertThat(day6.countFish("/Users/olivianye/Projects/AOC_2021/src/main/java/Day6/Day6AocInput", 80))
                 .isEqualTo(expectedCount);
     }
+
+    @Test
+    void testCountFishAocInputPart2() throws FileNotFoundException {
+        int expectedCount = 376194;
+        int test = day6.countFish("/Users/olivianye/Projects/AOC_2021/src/main/java/Day6/Day6AocInput", 256);
+        assertThat(day6.countFish("/Users/olivianye/Projects/AOC_2021/src/main/java/Day6/Day6AocInput", 256))
+                .isEqualTo(expectedCount);
+    }
 }
