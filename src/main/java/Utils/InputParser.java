@@ -16,4 +16,15 @@ public class InputParser {
         scanner.close();
         return  inputList;
     }
+
+    public List<Integer> parseInputForInts(String pathToFile) throws FileNotFoundException {
+        List<Integer> inputList = new ArrayList<>();
+        Scanner scanner = new Scanner(new File(pathToFile));
+        scanner.useDelimiter(("\\D"));
+        while (scanner.hasNextInt()) {
+            inputList.add(scanner.nextInt());
+        }
+        scanner.close();
+        return  inputList;
+    }
 }
