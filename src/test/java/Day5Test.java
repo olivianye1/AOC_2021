@@ -9,16 +9,30 @@ public class Day5Test {
     Day5 day5 = new Day5();
 
     @Test
-    void testCountDangerousPointsOnTestInput() throws FileNotFoundException {
+    void testCountDangerousPointsOnTestInputWithoutDiagonals() throws FileNotFoundException {
         int expectedCount = 5;
-        assertThat(day5.countDangerousPoints("/Users/olivianye/Projects/AOC_2021/src/main/java/Day5/Day5TestInput"))
+        assertThat(day5.countDangerousPoints("/Users/olivianye/Projects/AOC_2021/src/main/java/Day5/Day5TestInput", false))
                 .isEqualTo(expectedCount);
     }
 
     @Test
-    void testCountDangerousPointsOnAocInput() throws FileNotFoundException {
+    void testCountDangerousPointsOnAocInputWithoutDiagonals() throws FileNotFoundException {
         int expectedCount = 4993;
-        assertThat(day5.countDangerousPoints("/Users/olivianye/Projects/AOC_2021/src/main/java/Day5/Day5AocInput"))
+        assertThat(day5.countDangerousPoints("/Users/olivianye/Projects/AOC_2021/src/main/java/Day5/Day5AocInput", false))
+                .isEqualTo(expectedCount);
+    }
+
+    @Test
+    void testCountDangerousPointsOnTestInputWithDiagonals() throws FileNotFoundException {
+        int expectedCount = 12;
+        assertThat(day5.countDangerousPoints("/Users/olivianye/Projects/AOC_2021/src/main/java/Day5/Day5TestInput", true))
+                .isEqualTo(expectedCount);
+    }
+
+    @Test
+    void testCountDangerousPointsOnAocInputWithDiagonals() throws FileNotFoundException {
+        int expectedCount = 21101;
+        assertThat(day5.countDangerousPoints("/Users/olivianye/Projects/AOC_2021/src/main/java/Day5/Day5AocInput", true))
                 .isEqualTo(expectedCount);
     }
 }
